@@ -1,0 +1,5 @@
+pytest==5.4.1
+allure-pytest==2.8.12
+pytest-xdist==1.31.0
+pytest-timeouts==1.2.1
+cachetools==4.0.0
