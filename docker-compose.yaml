@@ -1,0 +1,23 @@
+version: '3.5'
+
+x-browserstack-creds-enviroment:
+  &browserstack-creds-enviroment
+  BROWSERSTACK_USERNAME: ""
+  BROWSERSTACK_ACCESS_KEY: ""
+
+x-pytest-config-environment:
+  &pytest-config-environment
+  TESTS_DIR: /app/tests
+
+
+services:
+  testing:
+    environment:
+      <<: *browserstack-creds-enviroment
+      <<: *pytest-config-environment
+    build: .
+    image: vasilyevaa/whisk-test-assignment
+    volumes:
+      - './:/app'
+    stdin_open: true
+    tty: true

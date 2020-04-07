@@ -1,0 +1,8 @@
+version: '3.5'
+
+
+services:
+  testing:
+    environment:
+      BROWSERSTACK_USERNAME: ""
+      BROWSERSTACK_ACCESS_KEY: ""
