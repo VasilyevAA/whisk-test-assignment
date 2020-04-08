@@ -44,6 +44,12 @@ class TestAddItemInShoppingList:
         assert code == STATUS_CODES.bad
         assert data['code'] == 'shoppingList.notFound'
 
+    def test_negative_add_item_in_shopping_list_with_invalid_data(self):
+        raise NotImplementedError
+
+    def test_negative_add_item_in_shopping_list_without_auth(self):
+        raise NotImplementedError
+
 
 if __name__ == '__main__':
     run_test(__file__)

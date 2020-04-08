@@ -26,6 +26,9 @@ class TestGetShoppingList:
         assert code == STATUS_CODES.ok
         assert not data
 
+    def test_negative_get_shopping_list_without_auth(self):
+        raise NotImplementedError
+
 
 if __name__ == '__main__':
     run_test(__file__)

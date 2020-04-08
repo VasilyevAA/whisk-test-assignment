@@ -30,6 +30,12 @@ class TestCreateShoppingList:
         assert data.get('name') == shopping_list.get('name')
         assert data.get('language') == shopping_list.get('language', 'en')
 
+    def test_negative_create_shopping_list_with_invalid_data(self):
+        raise NotImplementedError
+
+    def test_negative_create_shopping_list_without_auth(self):
+        raise NotImplementedError
+
 
 if __name__ == '__main__':
     run_test(__file__)
