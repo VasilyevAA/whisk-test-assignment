@@ -7,8 +7,10 @@ from splinter.driver import DriverAPI
 class WebElementObjQA:
     TESTID_CSS_TEMPLATE = '[data-testid = "%s"]'
 
-    def find_by_testid(self, testid_data):
-        return self.root_form.find_by_css(self.TESTID_CSS_TEMPLATE % testid_data)
+    def find_by_testid(self, testid_data, prefix='', suffix=''):
+        css_selector = prefix + self.TESTID_CSS_TEMPLATE % testid_data + suffix
+        print(css_selector)
+        return self.root_form.find_by_css(css_selector)
 
     def __init__(self, form_element: WebDriverElement):
         self.root_form = form_element
@@ -22,6 +24,11 @@ class PageObjectQA:
         css_selector = prefix + self.TESTID_CSS_TEMPLATE % testid_data + suffix
         print(css_selector)
         return self.browser.find_by_css(css_selector)
+
+    def wait_popup_hidden(self, msg, xpath=None):
+        xpath = xpath or f"//span[contains(text(), '{msg}')]"
+        assert self.browser.is_element_present_by_xpath(xpath, 15)
+        assert self.browser.is_element_not_present_by_xpath(xpath, 15)
 
     def __init__(self, splinter_browser: DriverAPI = None, should_try_url_open=False):
         self.browser = splinter_browser or None  # or none because i think splinter implement singleton browser
