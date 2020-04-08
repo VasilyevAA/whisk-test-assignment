@@ -6,3 +6,4 @@ services:
     environment:
       BROWSERSTACK_USERNAME: ""
       BROWSERSTACK_ACCESS_KEY: ""
+      WHISK_CLIENT_ID: ""
