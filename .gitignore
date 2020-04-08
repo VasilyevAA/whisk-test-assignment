@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # Docker files
-docker-compose.override.yaml
+*.override.yaml
+*.override.yml
