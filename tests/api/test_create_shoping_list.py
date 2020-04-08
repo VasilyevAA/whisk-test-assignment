@@ -26,6 +26,7 @@ class TestCreateShoppingList:
         assert code == STATUS_CODES.ok
         sort_fn = lambda it: tuple(it.get(key) for key in ['name', 'quantity', 'comment'])
         checks.eq_list(data.get('items', []), shopping_items or [], sorted_fn=sort_fn)
+        assert data.get('id')
         assert data.get('name') == shopping_list.get('name')
         assert data.get('language') == shopping_list.get('language', 'en')
 
