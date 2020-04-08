@@ -13,6 +13,13 @@ class SignUpForm(WebElementObjQA):
         self.find_by_testid("auth-continue-button").click()
 
 
+class ItemForm(WebElementObjQA):
+
+    def delete_item(self):
+        button = self.find_by_testid("edit-item-delete-button", 'button')
+        button.click()
+
+
 class ShoppingListPage(PageObjectQA):
     URL = "/shopping-list"
 
@@ -30,14 +37,14 @@ class ShoppingListPage(PageObjectQA):
         return SignUpForm(self.find_by_testid(self.AUTH_FORM_TESTID))
 
     def check_signup_form_hidden(self):
-        self.browser.is_element_not_present_by_css(self.TESTID_CSS_TEMPLATE % self.AUTH_FORM_TESTID)
+        assert self.browser.is_element_not_present_by_css(self.TESTID_CSS_TEMPLATE % self.AUTH_FORM_TESTID)
 
     def add_item_to_list(self, item_name):
         elem = self.find_by_testid(self.AUTOCOMPLETE_ITEM_TESTID, "input")
         elem.fill(item_name)
 
     def wait_items_dropdown(self):
-        self.browser.is_element_present_by_css('div' + self.TESTID_CSS_TEMPLATE % self.AUTOCOMPLETE_ITEM_TESTID)
+        assert self.browser.is_element_present_by_css('div' + self.TESTID_CSS_TEMPLATE % self.AUTOCOMPLETE_ITEM_TESTID)
 
     def click_on_dropdown_item_with_name(self, name=None):
         elems = self.find_by_testid(self.AUTOCOMPLETE_ITEM_TESTID, 'div', '>div>div ')
@@ -56,5 +63,17 @@ class ShoppingListPage(PageObjectQA):
     def get_added_items_in_shopping_list(self):
         elems = self.find_by_testid("shopping-list-item-name")
         return elems
+
+    def _get_item_detail_form(self):
+        assert self.browser.is_element_present_by_css("form")
+        return ItemForm(self.browser.find_by_css("form"))
+
+    def open_item_detail(self, item_name):
+        items = self.get_added_items_in_shopping_list()
+        item = [i for i in items if i.text.lower() == item_name.lower()]
+        assert len(item) == 1
+        item = item[0]
+        item.click()
+        return self._get_item_detail_form()
 
 
