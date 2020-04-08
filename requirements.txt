@@ -6,3 +6,4 @@ cachetools==4.0.0
 pytest-splinter==2.0.1
 requests==2.23.0
 loguru==0.4.0
+datatest==0.9.6

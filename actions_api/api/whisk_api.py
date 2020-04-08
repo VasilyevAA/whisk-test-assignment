@@ -1,11 +1,11 @@
-from utils.common import ClientApi
+from utils.client_qa_api import ClientApi
 
 
 class WhiskApi:
     def __init__(self, whisk_client: ClientApi):
         self.client = whisk_client
 
-    def login_anonymous(self, clientId, data=None):
+    def login_anonymous(self, clientId=None, data=None):
         uri = '/auth/anonymous/create'
         data = data or {
             "clientId": clientId
@@ -15,7 +15,7 @@ class WhiskApi:
     def logout(self):
         raise NotImplementedError
 
-    def create_shopping_list(self, name, language=None, recipes=None, rawItems=None, items=None):
+    def create_shopping_list(self, name=None, language=None, recipes=None, rawItems=None, items=None):
         uri = '/v1/lists'
         data = {
             "name": name,
