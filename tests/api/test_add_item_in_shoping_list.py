@@ -36,8 +36,13 @@ class TestAddItemInShoppingList:
         assert len(sl_data) == 1
         interested_shopping_list = sl_data[0]
         assert interested_shopping_list['id'] == shopping_list_id
-        expected_items = shopping_list['items'] or [] + additional_items or []
+        expected_items = (shopping_list['items'] or []) + (additional_items or [])
         assert interested_shopping_list['itemsCount'] == len(expected_items)
+
+    def test_negative_add_item_to_not_exist_shopping_list(self):
+        code, data = self.client.add_item_to_shopping_list('106faac3fe6014c48b5ac931a77f111162a', items=[generate_shopping_item()])
+        assert code == STATUS_CODES.bad
+        assert data['code'] == 'shoppingList.notFound'
 
 
 if __name__ == '__main__':

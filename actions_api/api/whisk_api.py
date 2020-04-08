@@ -35,7 +35,7 @@ class WhiskApi:
             "rawItems": rawItems,
             "items": items,
         }
-        return self.client.post(uri, data=data)
+        return self.client.post(uri, body=data)
 
     def delete_item_from_shopping_list(self):
         raise NotImplementedError
