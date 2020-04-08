@@ -1,31 +1,60 @@
 from splinter.driver.webdriver import WebDriverElement
 
-from utils.client_qa_ui import PageObjectQA
+from utils.client_qa_ui import PageObjectQA, WebElementObjQA
 
 
-class SignUpForm:
-
-    def __init__(self, form_element: WebDriverElement):
-        self.root_form = form_element
+class SignUpForm(WebElementObjQA):
 
     def fill_email_or_phone(self, email_or_phone):
-        input = self.root_form.find_by_css('[data-testid = "UI_KIT_INPUT"]')
+        input = self.find_by_testid("UI_KIT_INPUT")
         return input.fill(email_or_phone)
 
     def click_continue(self):
-        self.root_form.find_by_css('[data-testid = "auth-continue-button"]').click()
+        self.find_by_testid("auth-continue-button").click()
 
 
 class ShoppingListPage(PageObjectQA):
     URL = "/shopping-list"
 
-    AUTH_FORM_CSS = '[data-testid = "authentication-form"]'
+    AUTH_FORM_TESTID = "authentication-form"
+    AUTOCOMPLETE_ITEM_TESTID = "desktop-add-item-autocomplete"
 
     def __init__(self, browser=None, open_page=False):
         super().__init__(browser, should_try_url_open=open_page)
 
+    def get_active_username(self):
+        elem = self.find_by_testid("avatar-button", "", ">div:nth-child(2)")
+        return elem.text
+
     def get_signup_form(self):
-        return SignUpForm(self.browser.find_by_css(self.AUTH_FORM_CSS))
+        return SignUpForm(self.find_by_testid(self.AUTH_FORM_TESTID))
 
     def check_signup_form_hidden(self):
-        self.browser.is_element_not_present_by_css(self.AUTH_FORM_CSS)
+        self.browser.is_element_not_present_by_css(self.TESTID_CSS_TEMPLATE % self.AUTH_FORM_TESTID)
+
+    def add_item_to_list(self, item_name):
+        elem = self.find_by_testid(self.AUTOCOMPLETE_ITEM_TESTID, "input")
+        elem.fill(item_name)
+
+    def wait_items_dropdown(self):
+        self.browser.is_element_present_by_css('div' + self.TESTID_CSS_TEMPLATE % self.AUTOCOMPLETE_ITEM_TESTID)
+
+    def click_on_dropdown_item_with_name(self, name=None):
+        elems = self.find_by_testid(self.AUTOCOMPLETE_ITEM_TESTID, 'div', '>div>div ')
+        if name is None:
+            name = elems.text
+            elems.click()
+            return name
+        for el in elems:
+            if name.lower() == el.text.lower():
+                name = el.text
+                el.click()
+                return name
+        else:
+            raise Exception(f"Can't find item with name '{name}'")
+
+    def get_added_items_in_shopping_list(self):
+        elems = self.find_by_testid("shopping-list-item-name")
+        return elems
+
+

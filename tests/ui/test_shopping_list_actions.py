@@ -1,19 +1,15 @@
-import allure
-
 from actions_ui.page_objects.shipping_list_page import ShoppingListPage
-from utils.generate import generate_value
+from actions_ui.shopping_list import add_item_in_shopping_list, sign_up_user
 
 
-def test_some_browser_stuff(browser):
-    """Test using real browser."""
-    main_page = ShoppingListPage(browser, True)
-    with allure.step('Signup on shopping list page'):
-        signup_form = main_page.get_signup_form()
-        signup_form.fill_email_or_phone(generate_value(20, suffix='@gmail.com'))
-        signup_form.click_continue()
-        main_page.check_signup_form_hidden()
-
-    print('qweqwe')
+def test_add_items_in_shopping_list(browser):
+    shopping_list = ShoppingListPage(browser, True)
+    sign_up_user(shopping_list)
+    expected_items = []
+    for add_item in ['Milk 1%', 'Milk chocolate']:
+        expected_items.append(add_item_in_shopping_list(shopping_list, 'Milk', add_item))
+    all_items = shopping_list.get_added_items_in_shopping_list()
+    assert set(expected_items) == set(i.text for i in all_items)
 
 
 if __name__ == '__main__':
