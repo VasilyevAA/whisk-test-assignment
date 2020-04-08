@@ -9,6 +9,9 @@ x-pytest-config-environment:
   &pytest-config-environment
   TESTS_DIR: /app/tests
 
+x-service-config-environment:
+  WHISK_CLIENT_ID: "hSugagKt8Tdk3Y1CtV8G6DEw977fZ17aCktZCSEBHfdSgCb6GQDMizScmUP5vno9"
+
 
 services:
   testing:
