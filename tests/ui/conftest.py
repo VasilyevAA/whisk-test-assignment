@@ -1,43 +1,18 @@
 import pytest
-from setting import BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY
+from setting import BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, WEB_DRIVER_NAME, get_desired_capabilities
 
 if not all([BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY]):
     raise Exception('Need setup browserstack credentials for execute tests')
 
 remote_server_url = f'https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub'
 
-_desired_cap1 = {
- 'browser': 'Chrome',
- 'browser_version': '80.0',
- 'os': 'Windows',
- 'os_version': '10',
- 'resolution': '1024x768'
-}
-
-desired_cap_1 = dict(_desired_cap1, **{
-    'name': 'Bstack-[Python] Sample Test in Safari',
-    'browserstack.debug': True
-})
-
-_desired_cap2 = {
- 'browser': 'Safari',
- 'browser_version': '13.0',
- 'os': 'OS X',
- 'os_version': 'Catalina',
- 'resolution': '1024x768'
-}
-
-desired_cap_2 = dict(_desired_cap2, **{
-    'name': 'Bstack-[Python] Sample Test in Safari',
-    'browserstack.debug': True
-})
 
 @pytest.fixture(
     scope='session',
     params=[
-        # desired_cap_1,
-        desired_cap_2,
+        get_desired_capabilities(),
     ],
+    ids=lambda param: repr('_'.join(param.get(i) for i in ['browser', 'browser_version', 'os', 'os_version']))
 )
 def parametrized_splinter_driver_kwargs(splinter_webdriver, request):
     """Parametrized webdriver kwargs."""
@@ -46,10 +21,10 @@ def parametrized_splinter_driver_kwargs(splinter_webdriver, request):
     return {}
 
 
-# @pytest.fixture(scope='session')
-# def splinter_webdriver():
-#     """Override splinter webdriver name."""
-#     return 'remote'
+@pytest.fixture(scope='session')
+def splinter_webdriver():
+    """Override splinter webdriver name."""
+    return WEB_DRIVER_NAME
 
 
 @pytest.fixture(scope='session')
