@@ -1,3 +1,5 @@
+import pytest
+
 from utils import run_test
 from utils.common import STATUS_CODES
 from utils.generate import generate_number
@@ -27,7 +29,7 @@ class TestGetShoppingList:
         assert not data
 
     def test_negative_get_shopping_list_without_auth(self):
-        raise NotImplementedError
+        pytest.skip("NotImplementedError")
 
 
 if __name__ == '__main__':

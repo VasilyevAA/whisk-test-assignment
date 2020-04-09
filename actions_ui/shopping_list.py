@@ -14,8 +14,9 @@ def sign_up_user(shopping_list_page, username=None):
 
 
 def add_item_in_shopping_list(shopping_list_page, search_name='', item_name=None):
-    shopping_list_page.add_item_to_list(search_name)
-    shopping_list_page.wait_items_dropdown()
-    added_item_name = shopping_list_page.click_on_dropdown_item_with_name(item_name)
-    return added_item_name
+    with allure.step('Add item in shopping list'):
+        shopping_list_page.add_item_to_list(search_name)
+        shopping_list_page.wait_items_dropdown()
+        added_item_name = shopping_list_page.click_on_dropdown_item_with_name(item_name)
+        return added_item_name
 
