@@ -10,7 +10,9 @@ x-pytest-config-environment:
   TESTS_DIR: /app/tests
 
 x-service-config-environment:
+  &service-config-environment
   WHISK_CLIENT_ID: "WCqJWnpNatcf3LUCxZmq94pR30sj2OOdBbMoGO8NGrMgUMk6Ogl4EMvLqcykNuGf"
+  WEB_DRIVER_NAME: "remote"
 
 
 services:
@@ -18,6 +20,7 @@ services:
     environment:
       <<: *browserstack-creds-enviroment
       <<: *pytest-config-environment
+      <<: *service-config-environment
     build: .
     image: vasilyevaa/whisk-test-assignment
     volumes:

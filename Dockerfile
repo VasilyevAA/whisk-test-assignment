@@ -3,7 +3,7 @@ FROM selenium/base:latest
 ENV ALLURE_DIR="./allure-results/" \
     TESTS_DIR="./tests" \
     TEST_THREAD_COUNT="5" \
-    TEST_TIMEOUT="200" \
+    TEST_TIMEOUT="120" \
     PYTEST_STOUT="-vvv -s"
 
 USER root
@@ -19,5 +19,7 @@ COPY /requirements.txt /app/requirements.txt
 RUN pip3 install --no-cache-dir -U pip \
     && pip3 install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["run.sh"]
+COPY . /app
+
+ENTRYPOINT ["/app/run.sh"]
 CMD [""]
