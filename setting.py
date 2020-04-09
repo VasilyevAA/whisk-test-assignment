@@ -13,5 +13,8 @@ WEB_DRIVER_NAME = os.getenv('WEB_DRIVER_NAME', 'firefox')  # remote, firefox, ch
 
 
 def get_desired_capabilities():
-    browser_cfg = (Path(__file__) / "../browser_config.json").resolve().read_text()
-    return json.loads(browser_cfg)
+    browser_cfg = json.loads((Path(__file__) / "../browser_config.json").resolve().read_text())
+    return dict({
+        'name': 'Test assignment VAA',
+        'browserstack.debug': True
+    }, **browser_cfg)
