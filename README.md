@@ -23,7 +23,7 @@
 3) And choose one of command with make: testing_all, testing_api, testing_ui 
 
 For configure remote browser for UI test change "browser_config.json". 
-Remote config you can find [this](https://www.browserstack.com/automate/python) 
+Remote config you can find [here](https://www.browserstack.com/automate/python) 
 in "Getting Started" copy "desired_cap" from snippet
 One test session - one browser and os.
 
