@@ -37,7 +37,7 @@ class TestDeleteItemFromShoppingList:
         )
         assert code == STATUS_CODES.bad
         assert add_item_data['code']
-        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in add_item_data['code']
+        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in add_item_data['description']
         code, data = self.client.get_shopping_lists()
         assert code == STATUS_CODES.ok
         assert len(expected_items) == data[0]['itemsCount']
