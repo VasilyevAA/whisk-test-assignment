@@ -27,3 +27,9 @@ services:
       - './:/app'
     stdin_open: true
     tty: true
+
+  allure:
+    image: solutis/allure
+    volumes:
+      - './:/home/allure/'
+    command: 'allure generate'
