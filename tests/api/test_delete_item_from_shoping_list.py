@@ -1,6 +1,7 @@
 from utils.checks import eq_list
 from utils.common import STATUS_CODES
-from actions_api.whisk import generate_shopping_item, generate_shopping_list, get_auth_client
+from actions_api.whisk import generate_shopping_item, generate_shopping_list, get_auth_client, MAX_ITEM_IN_LIST, \
+    MSG_MAX_ITEM_DESCRIPTION_ERROR
 
 
 class TestDeleteItemFromShoppingList:
@@ -24,6 +25,22 @@ class TestDeleteItemFromShoppingList:
         code, data = self.client.get_shopping_lists()
         assert code == STATUS_CODES.ok
         assert len(items) - 1 == data[0]['itemsCount']
+        
+    def test_negative_delete_items_more_than_max(self):
+        shopping_list_id, items = self.prepare_shopping_list(MAX_ITEM_IN_LIST)
+        additional_items = [generate_shopping_item()]
+        code, add_item_data = self.client.add_item_to_shopping_list(shopping_list_id, items=additional_items)
+        assert code == STATUS_CODES.ok
+        expected_items = items + add_item_data['items']
+        code, add_item_data = self.client.add_item_to_shopping_list(
+            shopping_list_id, items=[{'id': it['id'], 'deleted': True} for it in expected_items]
+        )
+        assert code == STATUS_CODES.bad
+        assert add_item_data['code']
+        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in add_item_data['code']
+        code, data = self.client.get_shopping_lists()
+        assert code == STATUS_CODES.ok
+        assert len(expected_items) == data[0]['itemsCount']
 
     def test_negative_delete_items_twice_from_shopping_list_from__two_response(self):
         shopping_list_id, items = self.prepare_shopping_list()

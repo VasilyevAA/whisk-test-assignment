@@ -9,6 +9,8 @@ from utils.generate import generate_value, get_rnd_bool, generate_number
 MIN_ITEM_IN_LIST = 0
 MAX_ITEM_IN_LIST = 100
 
+MSG_MAX_ITEM_DESCRIPTION_ERROR = "is not between 0 and 100"
+
 
 def get_unauthorized_client(headers=None):
     return WhiskApi(ClientApi(BASE_API_TEST_URL, additional_headers=headers))

@@ -3,7 +3,8 @@ import pytest
 from utils import run_test, checks
 from utils.generate import generate_number
 from utils.common import STATUS_CODES, get_params_argv
-from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list, MAX_ITEM_IN_LIST
+from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list, MAX_ITEM_IN_LIST, \
+    MSG_MAX_ITEM_DESCRIPTION_ERROR
 
 ITEMS_FOR_PARAMETRIZE = get_params_argv({
     'zero_items': [],
@@ -53,7 +54,7 @@ class TestAddItemInShoppingList:
         code, add_item_data = self.client.add_item_to_shopping_list(shopping_list_id, items=additional_items)
         assert code == STATUS_CODES.bad
         assert add_item_data['code']
-        assert 'is not between 0 and 100' in add_item_data['description']
+        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in add_item_data['description']
 
     def test_negative_add_item_in_shopping_list_with_invalid_data(self):
         pytest.skip("NotImplementedError")
