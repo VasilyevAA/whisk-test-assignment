@@ -3,14 +3,14 @@ import pytest
 from utils import run_test, checks
 from utils.generate import generate_number
 from utils.common import STATUS_CODES, get_params_argv
-from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list
-
+from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list, MAX_ITEM_IN_LIST, \
+    MSG_MAX_ITEM_DESCRIPTION_ERROR
 
 ITEMS_FOR_PARAMETRIZE = get_params_argv({
     'zero_items': [],
     'without_items_field': None,
     'one_item': [generate_shopping_item()],
-    'many_item': [generate_shopping_item() for i in range(generate_number(2, 4))],
+    'max_item': [generate_shopping_item() for i in range(MAX_ITEM_IN_LIST)],
 })
 
 
@@ -21,7 +21,8 @@ class TestAddItemInShoppingList:
 
     @pytest.mark.parametrize('additional_items', **ITEMS_FOR_PARAMETRIZE)
     def test_positive_add_item_in_shopping_list(self, additional_items):
-        shopping_list = generate_shopping_list(items=[generate_shopping_item() for i in range(generate_number(max=3))])
+        shopping_items = [generate_shopping_item() for _ in range(generate_number(max=3))]
+        shopping_list = generate_shopping_list(items=shopping_items)
         code, data = self.client.create_shopping_list(**shopping_list)
         shopping_list_id = data['id']
         assert code == STATUS_CODES.ok
@@ -43,6 +44,17 @@ class TestAddItemInShoppingList:
         code, data = self.client.add_item_to_shopping_list('106faac3fe6014c48b5ac931a77f111162a', items=[generate_shopping_item()])
         assert code == STATUS_CODES.bad
         assert data['code'] == 'shoppingList.notFound'
+
+    def test_negative_add_item_to_empty_shopping_list_more_than_max(self):
+        additional_items = [generate_shopping_item() for _ in range(MAX_ITEM_IN_LIST + 1)]
+        shopping_list = generate_shopping_list(items=[])
+        code, data = self.client.create_shopping_list(**shopping_list)
+        assert code == STATUS_CODES.ok
+        shopping_list_id = data['id']
+        code, add_item_data = self.client.add_item_to_shopping_list(shopping_list_id, items=additional_items)
+        assert code == STATUS_CODES.bad
+        assert add_item_data['code']
+        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in add_item_data['description']
 
     def test_negative_add_item_in_shopping_list_with_invalid_data(self):
         pytest.skip("NotImplementedError")

@@ -9,7 +9,12 @@ ENV ALLURE_DIR="./allure-results/" \
 USER root
 
 RUN apt update \
-    && apt install -y python3.7 python3-pip
+    && apt install -y software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt install -y python3.8 python3-pip \
+    && unlink /usr/bin/python3 \
+    && ln -s /usr/bin/python3.8 /usr/bin/python3
+
 
 RUN mkdir -p /app
 WORKDIR /app

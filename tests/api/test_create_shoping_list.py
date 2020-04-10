@@ -1,16 +1,15 @@
 import pytest
 
 from utils import run_test, checks
-from utils.generate import generate_number
 from utils.common import STATUS_CODES, get_params_argv
-from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list
-
+from actions_api.whisk import get_auth_client, generate_shopping_item, generate_shopping_list, MAX_ITEM_IN_LIST, \
+    MSG_MAX_ITEM_DESCRIPTION_ERROR
 
 ITEMS_FOR_PARAMETRIZE = get_params_argv({
     'zero_items': [],
     'without_items_field': None,
     'one_item': [generate_shopping_item()],
-    'many_item': [generate_shopping_item() for i in range(generate_number(2, 4))],
+    'max_item': [generate_shopping_item() for i in range(MAX_ITEM_IN_LIST)],
 })
 
 
@@ -29,6 +28,13 @@ class TestCreateShoppingList:
         assert data.get('id')
         assert data.get('name') == shopping_list.get('name')
         assert data.get('language') == shopping_list.get('language', 'en')
+
+    def test_negative_create_shopping_list_with_max_items(self):
+        shopping_list = generate_shopping_list(items=[generate_shopping_item() for i in range(101)])
+        code, data = self.client.create_shopping_list(**shopping_list)
+        assert code == STATUS_CODES.bad
+        assert data['code']
+        assert MSG_MAX_ITEM_DESCRIPTION_ERROR in data['description']
 
     def test_negative_create_shopping_list_with_invalid_data(self):
         pytest.skip("NotImplementedError")
