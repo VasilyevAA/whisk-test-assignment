@@ -1,5 +1,3 @@
-import pytest
-
 from actions_ui.common import PopupMsgTempaltes
 from actions_ui.shopping_list import sign_up_user
 from actions_ui.page_objects.shipping_list_page import ShoppingListPage

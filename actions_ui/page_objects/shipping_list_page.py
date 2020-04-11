@@ -1,5 +1,3 @@
-from splinter.driver.webdriver import WebDriverElement
-
 from utils.client_qa_ui import PageObjectQA, WebElementObjQA
 
 
@@ -37,6 +35,7 @@ class ShoppingListPage(PageObjectQA):
         return SignUpForm(self.find_by_testid(self.AUTH_FORM_TESTID))
 
     def check_signup_form_hidden(self):
+        assert self.browser.is_element_present_by_css(self.TESTID_CSS_TEMPLATE % self.AUTH_FORM_TESTID)
         assert self.browser.is_element_not_present_by_css(self.TESTID_CSS_TEMPLATE % self.AUTH_FORM_TESTID)
 
     def add_item_to_list(self, item_name):
