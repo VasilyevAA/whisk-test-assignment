@@ -2,8 +2,8 @@ from actions_ui.page_objects.shipping_list_page import ShoppingListPage
 from actions_ui.shopping_list import add_item_in_shopping_list, sign_up_user
 
 
-def test_add_items_in_shopping_list(browser):
-    shopping_list = ShoppingListPage(browser, True)
+def test_add_items_in_shopping_list(func_browser):
+    shopping_list = ShoppingListPage(func_browser, True)
     sign_up_user(shopping_list)
     expected_items = []
     for add_item in ['Milk 1%', 'Milk chocolate']:

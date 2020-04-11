@@ -43,3 +43,11 @@ def splinter_browser_class(request, parametrized_splinter_driver_kwargs):
         )
 
     return FixedBrowser
+
+
+@pytest.fixture()
+def func_browser(request, browser):
+    def quit_func_browser():
+        browser.quit()
+    request.addfinalizer(quit_func_browser)
+    return browser
