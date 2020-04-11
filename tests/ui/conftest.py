@@ -1,5 +1,5 @@
 import pytest
-from setting import BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, WEB_DRIVER_NAME, get_desired_capabilities
+from setting import BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, WEB_DRIVER_NAME, get_test_browser_configs
 
 if not all([BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY]):
     raise Exception('Need setup browserstack credentials for execute tests')
@@ -9,10 +9,8 @@ remote_server_url = f'https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_ACCESS_KEY}@
 
 @pytest.fixture(
     scope='session',
-    params=[
-        get_desired_capabilities(),
-    ],
-    ids=lambda param: repr('_'.join(param.get(i) for i in ['browser', 'browser_version', 'os', 'os_version']))
+    params=get_test_browser_configs(),
+    ids=lambda param: repr('_'.join(param.get(i) for i in ['os', 'os_version', 'browser', 'browser_version']))
 )
 def parametrized_splinter_driver_kwargs(splinter_webdriver, request):
     """Parametrized webdriver kwargs."""
