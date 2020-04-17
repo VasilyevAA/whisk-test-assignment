@@ -22,13 +22,6 @@
 2) make build
 3) And choose one of command with make: testing_all, testing_api, testing_ui 
 
-For configure remote browser for UI test change "browser_config.json". 
+For configure remote browsers for UI tests change "browser_config.json" items. 
 Remote config you can find [here](https://www.browserstack.com/automate/python) 
 in "Getting Started" copy "desired_cap" from snippet
-One test session - one browser and os.
-
-
-#### P.S.
-1) Там нет полнценной реализации валидатора
-2) Нет нормального логера(небольшая имплементация для апи тестов) его достаточно трудоемко повсеместно вкручивать
-3) pytest-splinter оказался очень сырым :(
