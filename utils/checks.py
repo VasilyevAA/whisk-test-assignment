@@ -11,7 +11,7 @@ def eq_list(actual: List, expected: List, sorted_fn=None):
     This solution have many problem, but for good solution need use complex methods and libs
     for create common "validator" for different data structures
     """
-    _sort_fn = lambda data: list(sorted(data, key=sorted_fn))
+    _sort_fn = lambda data: sorted(data, key=sorted_fn)
     actual, expected = _sort_fn(actual), _sort_fn(expected)
     assert len(actual) == len(expected), "Lists have different length"
     for i, ex_data in enumerate(expected):
