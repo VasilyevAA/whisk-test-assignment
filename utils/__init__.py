@@ -6,6 +6,7 @@ import pytest
 def run_test(file_name, capture_stdout=True, allure_dir=None):
     cmd = [
         file_name, "-vvv",
+        # '-n', '3'
     ]
 
     if capture_stdout:
