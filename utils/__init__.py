@@ -1,19 +1,18 @@
-import os
 import sys
 import pytest
+from pathlib import Path
 
 
 def run_test(file_name, capture_stdout=True, allure_dir=None):
     cmd = [
         file_name, "-vvv",
-        # '-n', '3'
     ]
 
     if capture_stdout:
         cmd.append("-s")
 
-    test_name = os.path.splitext(os.path.basename(file_name))[0]
-    alluredir = os.path.normpath("%s/%s/" % (allure_dir or "allure-results", test_name))
-    cmd.extend(["--alluredir", alluredir])
+    full_path = Path(file_name).resolve()
+    allure_dir = Path(f"{allure_dir or 'allure-results'}/{full_path.stem}/").resolve()
+    cmd.extend(["--alluredir", str(allure_dir)])
     print(cmd)
     sys.exit(pytest.main(cmd))
