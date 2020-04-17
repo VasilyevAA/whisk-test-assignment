@@ -23,8 +23,10 @@ class TestCreateShoppingList:
         shopping_list = generate_shopping_list(items=shopping_items)
         code, data = self.client.create_shopping_list(**shopping_list)
         assert code == STATUS_CODES.ok
-        sort_fn = lambda it: tuple(it.get(key) for key in ['name', 'quantity', 'comment'])
-        checks.eq_list(data.get('items', []), shopping_items or [], sorted_fn=sort_fn)
+        checks.eq_list(
+            data.get('items', []), shopping_items or [],
+            sorted_fn=lambda it: tuple(it.get(key) for key in ['name', 'quantity', 'comment'])
+        )
         assert data.get('id')
         assert data.get('name') == shopping_list.get('name')
         assert data.get('language') == shopping_list.get('language', 'en')
